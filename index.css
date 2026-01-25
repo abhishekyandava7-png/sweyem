@@ -1,0 +1,106 @@
+/* index.css */
+
+:root {
+  /* Force Dark Theme Default for Landing Page */
+  --primary: #f8fafc;
+  --primary-light: #cbd5e1;
+  --secondary: #0ea5e9;
+  --accent: #fbbf24;
+  --bg-body: #0f172a;
+  /* Slate 900 */
+  --bg-glass: rgba(30, 41, 59, 0.75);
+  --bg-card: #1e293b;
+  --bg-nav: rgba(15, 23, 42, 0.9);
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-light: #0f172a;
+  --border: #334155;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(14, 165, 233, 0.4);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.15) 0%, transparent 40%),
+    var(--bg-body);
+  color: var(--text-main);
+  /* Ensure no scroll unless needed */
+  overflow-x: hidden;
+}
+
+.container {
+  text-align: center;
+  max-width: 700px;
+  width: 100%;
+
+  /* Glassmorphism Card Style */
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 60px 40px;
+  box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.4);
+
+  position: relative;
+  z-index: 10;
+  transition: transform 0.3s ease;
+}
+
+.logo {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  border-radius: var(--radius-md);
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+  /* Subtle glow for logo/video */
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+
+p {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+}
+
+.btn {
+  display: inline-block;
+  padding: 16px 48px;
+  background-color: blueviolet;
+  /* Sky/Blue default from login */
+  color: rgb(168, 175, 232);
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(14, 165, 233, 0.4);
+  background: var(--primary);
+  /* Hover state */
+}
+
+.btn:active {
+  transform: translateY(-1px);
+}

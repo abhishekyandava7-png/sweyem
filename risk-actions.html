@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ABI | Risk & Actions</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="risk-actions.css">
+  <script defer src="theme.js"></script>
+  <script defer src="risk-actions.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="dashboard.html" class="nav-logo" style="text-decoration: none;">ABI</a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="settings.html">Settings</a>
+      <a href="faq.html">FAQ</a>
+      <a href="login.html">Log Out</a>
+    </div>
+  </nav>
+  <!-- MAIN -->
+  <main class="wrapper vertical">
+
+
+    <!-- RISK CARD -->
+    <section class="risk-card">
+      <div class="risk-header">
+        <div class="risk-icon">⚠️</div>
+        <div>
+          <h2>Inventory Overstock Risk</h2>
+          <span class="badge high">HIGH RISK</span>
+        </div>
+      </div>
+
+      <p class="risk-desc">
+        Demand for <strong>X-Phone</strong> has dropped unexpectedly.
+        Current inventory may lead to revenue loss within <strong>7 days</strong>.
+      </p>
+
+      <!-- AI CONFIDENCE -->
+      <div class="confidence-box">
+        <span>🤖 AI Confidence</span>
+        <div class="meter">
+          <div class="meter-fill">86%</div>
+        </div>
+      </div>
+
+      <button class="action-btn approve">
+        ✅ Approve AI Strategy
+      </button>
+    </section>
+
+    <!-- ACTION TIMELINE -->
+    <section class="timeline-card">
+      <h2>📅 Action Timeline</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="dot pink"></span>
+          <div>
+            <h4>Demand Drop Detected</h4>
+            <p>Sales velocity declined by 22%</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <span class="dot orange"></span>
+          <div>
+            <h4>Risk Assessed</h4>
+            <p>Overstock probability calculated</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <span class="dot green"></span>
+          <div>
+            <h4>AI Strategy Generated</h4>
+            <p>Apply discount & pause procurement</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- TOAST -->
+  <div id="toast">🎉 Strategy Approved Successfully</div>
+
+</body>
+
+</html>

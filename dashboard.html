@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ABI Dashboard | Executive Oversight</title>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <video autoplay muted loop id="bg-video"
+        style="position: fixed; top: 0; left: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; opacity: 0.05;">
+        <source src="logo.mp4" type="video/mp4">
+    </video>
+
+    <nav class="navbar">
+        <a href="dashboard.html" class="nav-logo" style="text-decoration: none;">ABI</a>
+        <div class="nav-links">
+            <button id="themeToggle" class="btn-icon" title="Toggle Theme"
+                style="background:none; color: var(--text-muted); font-size: 1.2rem; padding: 5px;">🌗</button>
+            <a href="settings.html">Settings</a>
+            <a href="faq.html">FAQ</a>
+            <a href="login.html">Log Out</a>
+        </div>
+    </nav>
+
+    <main class="dashboard" style="color: black;">
+        <h1>Business Health Overview</h1>
+        <p class="subtitle" style="color: #e5acac;">Real-time insights for <span id="displayUserId">...</span></p>
+
+        <!-- Business Profile Section -->
+        <section id="businessProfile"
+            style="background: white; padding: 20px; border-radius: 12px; margin: 20px auto; max-width: 800px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); color: black;">
+            <h2 id="businessNameDisplay" style="margin-top: 0; color: black;">Business Name</h2>
+            <p style="color: black; margin-bottom: 5px;"><strong>Industry:</strong> <span id="industryDisplay">-</span>
+            </p>
+            <p style="color: black;"><strong>Goal:</strong> <span id="goalDisplay">-</span></p>
+        </section>
+
+        <section id="integrationPanel"
+            style="background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid #4facfe; color: black;">
+            <h3 style="color: black;">🔗 Connect Business Data Streams</h3>
+            <p style="color: #333;">The AI Agent monitors these tools autonomously for risks.</p>
+            <div style="display: flex; justify-content: center; gap: 30px; margin: 20px 0;">
+                <label style="color: black;"><input type="checkbox" id="shopifyCheck" checked> Shopify (Sales)</label>
+                <label style="color: black;"><input type="checkbox" id="slackCheck"> Slack (Ops)</label>
+                <label style="color: black;"><input type="checkbox" id="stripeCheck"> Stripe (Finance)</label>
+            </div>
+            <button onclick="initializeTools()" class="btn"
+                style="background: #4facfe; color: white; padding: 12px 30px; border-radius: 8px; cursor: pointer; border: none;">Confirm
+                & Deploy Agent</button>
+        </section>
+
+        <div id="proactiveAlert" style="display: none; margin-bottom: 30px;">
+            <div
+                style="background: rgba(255, 75, 43, 0.1); border-left: 5px solid #ff4b2b; padding: 20px; border-radius: 8px;">
+                <h4 style="color: #ff4b2b; margin: 0;">🚨 PROACTIVE RECOVERY PLAN DETECTED</h4>
+                <p id="alertDescription" style="margin: 10px 0; color: black; font-weight: 500;"></p>
+                <small style="color: #333;">Source: Research Lab AI • <a href="insights.html"
+                        style="text-decoration: underline;">View Full Strategy</a></small>
+            </div>
+        </div>
+
+        <div class="cards">
+            <!-- Row 1 -->
+            <div class="card">
+                <h3><a href="revenue.html">📈 Revenue</a></h3>
+                <p>Stable Growth</p>
+            </div>
+
+            <div class="card warning">
+                <h3><a href="inventory.html">📦 Inventory</a></h3>
+                <p>Low Stock Alert</p>
+            </div>
+
+            <div class="card highlight">
+                <h3><a href="business-status.html">� Business Status</a></h3>
+                <p>Monitoring Actively</p>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="card highlight" style="border-left-color: #0ea5e9;">
+                <h3><a href="insights.html">🗨️ Insights</a></h3>
+                <p>3 actionable insights found</p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #8b5cf6;">
+                <h3><a href="data-analysis.html">📊 Data Analysis</a></h3>
+                <p>Sales & demand patterns ready</p>
+            </div>
+
+            <div class="card risk">
+                <h3><a href="risk-actions.html">⚠️ Risk</a></h3>
+                <p>2 potential risks detected</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        async function initializeTools() {
+            const btn = document.querySelector('#integrationPanel button');
+            const originalText = btn.innerText;
+            btn.innerText = "🔄 Connecting...";
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/deploy-agents');
+                const data = await response.json();
+
+                if (data.status === "Agents Deployed") {
+                    btn.innerText = "✅ Agents Active";
+                    btn.style.background = "#10b981";
+
+                    document.getElementById('integrationPanel').style.opacity = "0.6";
+                    document.getElementById('integrationPanel').style.pointerEvents = "none";
+
+                    // Update Dashboard Cards with "Real-Time" Data
+                    const revenueCard = document.querySelector('.card a[href="revenue.html"]').closest('.card');
+                    revenueCard.querySelector('p').innerText = `Live Revenue: $${data.live_data.revenue}`;
+                    revenueCard.style.borderLeftColor = "#10b981"; // Green for active
+
+                    const inventoryCard = document.querySelector('.card a[href="inventory.html"]').closest('.card');
+                    inventoryCard.querySelector('p').innerText = `Stock Count: ${data.live_data.inventory_count} Units`;
+
+                    alert(`🚀 Connected!\nShopify: ${data.shopify_status}\nSlack: ${data.slack_status}`);
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Failed to connect agents. Is the backend running?");
+                btn.innerText = originalText;
+            }
+        }
+
+        async function pollAgentMemory() {
+            try {
+                // Bridge to your Python Backend
+                const response = await fetch('http://127.0.0.1:8000/get-latest-insights?user_id=CEO_Alpha_01');
+                const data = await response.json();
+
+                if (data.insight && data.insight.roadmap) {
+                    // Show the alert box
+                    document.getElementById('proactiveAlert').style.display = "block";
+                    document.getElementById('alertDescription').innerText = "Phase 1: " + data.insight.roadmap[0];
+                    document.getElementById('aiResponse').innerHTML = `<p style="color: #4facfe;">Full Roadmap: ${data.insight.roadmap.join(' ➔ ')}</p>`;
+                    // Update the Insights card
+                    document.getElementById('insight-text').innerHTML =
+                        `<strong>Next Action:</strong> ${data.insight.roadmap[1]}`;
+
+                    // Send Real Notification if enabled
+                    if (localStorage.getItem('notifications_enabled') === 'true' && Notification.permission === "granted") {
+                        // Simple debounce: don't notify if we just did (using session storage or just simple check)
+                        if (!sessionStorage.getItem('notified_insight')) {
+                            new Notification("🚨 AI Anomaly Detected", {
+                                body: `Action Required: ${data.insight.roadmap[0]}`,
+                                icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png" // Alert icon
+                            });
+                            sessionStorage.setItem('notified_insight', 'true');
+                        }
+                    }
+                }
+            } catch (e) { console.log("Waiting for Agent to finish research..."); }
+        }
+
+        // 10-second polling to demonstrate real-time agency
+        setInterval(pollAgentMemory, 10000);
+        pollAgentMemory(); 
+    </script>
+    <script src="dashboard.js"></script>
+    <script src="theme.js"></script>
+</body>
+
+</html>

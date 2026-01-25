@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Business Status - ABI</title>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="business-status.css">
+    <script defer src="theme.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="dashboard.html" class="nav-logo" style="text-decoration: none;">ABI</a>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="revenue.html">Revenue</a>
+            <a href="inventory.html">Inventory</a>
+            <a href="login.html">Log Out</a>
+        </div>
+    </nav>
+
+    <main class="dashboard" style="text-align: left; max-width: 1000px; margin: auto;">
+        <h1 style="text-align: center;">Operational Status</h1>
+        <p class="subtitle" style="text-align: center;">Live System Health & Integrations</p>
+
+        <section class="settings-card slide-up" style="max-width: 100%;">
+            <h3 style="color: var(--primary);">System Health</h3>
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
+                <div
+                    style="padding: 20px; background: rgba(14, 165, 233, 0.1); border-radius: 8px; border: 1px solid var(--secondary);">
+                    <h4>API Connections</h4>
+                    <p style="color: green; font-weight: bold;">● Active</p>
+                    <small>Shopify, Slack</small>
+                </div>
+                <div
+                    style="padding: 20px; background: rgba(245, 158, 11, 0.1); border-radius: 8px; border: 1px solid var(--accent);">
+                    <h4>Data Sync</h4>
+                    <p style="color: #d97706; font-weight: bold;">● Processing</p>
+                    <small>Last sync: 2 mins ago</small>
+                </div>
+                <div
+                    style="padding: 20px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border: 1px solid #10b981;">
+                    <h4>AI Engine</h4>
+                    <p style="color: #059669; font-weight: bold;">● Standing By</p>
+                    <small>Ready for queries</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW STORE ANALYTICS SECTION -->
+        <section class="status-section slide-up delay-200">
+            <div class="status-header">
+                <h2>Store Analytics</h2>
+                <div class="select-container">
+                    <label for="citySelect">Select City:</label>
+                    <select id="citySelect" onchange="renderStores()">
+                        <option value="" selected disabled>Choose a city...</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Bangalore">Bangalore</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                    </select>
+                </div>
+            </div>
+
+            <h3 id="selectedCityTitle" style="margin-bottom: 20px; display: none;"></h3>
+
+            <div id="storeResults" class="status-results">
+                <p class="placeholder-text">Select a city to view detailed store metrics across India.</p>
+            </div>
+        </section>
+
+        <section class="settings-card slide-up delay-300" style="max-width: 100%; margin-top: 30px;">
+            <h3 style="color: var(--primary);">Recent Activity</h3>
+            <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                <li style="padding: 10px 0; border-bottom: 1px solid #eee;">
+                    <span
+                        style="background: #e0f2fe; color: #0284c7; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">INFO</span>
+                    <span style="margin-left: 10px;">User logged in</span>
+                    <span style="float: right; color: #999; font-size: 0.9rem;">Just now</span>
+                </li>
+                <li style="padding: 10px 0; border-bottom: 1px solid #eee;">
+                    <span
+                        style="background: #fef3c7; color: #d97706; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">WARN</span>
+                    <span style="margin-left: 10px;">Inventory threshold reached for Item #402</span>
+                    <span style="float: right; color: #999; font-size: 0.9rem;">10m ago</span>
+                </li>
+                <li style="padding: 10px 0;">
+                    <span
+                        style="background: #dcfce7; color: #16a34a; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">SUCCESS</span>
+                    <span style="margin-left: 10px;">Daily revenue report generated</span>
+                    <span style="float: right; color: #999; font-size: 0.9rem;">1h ago</span>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <script src="business-status.js"></script>
+</body>
+
+</html>

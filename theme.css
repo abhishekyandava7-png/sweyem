@@ -1,0 +1,202 @@
+/* theme.css - Central Design System */
+
+/* GOOGLE FONTS IMPORT */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* LIGHT MODE PALETTE (Modern Corporate) */
+    --primary: #0f172a;        /* Slate 900 */
+    --primary-light: #334155;  /* Slate 700 */
+    --secondary: #0ea5e9;      /* Sky 500 */
+    --accent: #f59e0b;         /* Amber 500 */
+
+    --bg-body: #f8fafc;        /* Slate 50 */
+    --bg-glass: rgba(255, 255, 255, 0.85);
+    --bg-card: #ffffff;
+    --bg-nav: rgba(255, 255, 255, 0.95);
+
+    --text-main: #0f172a;      /* Slate 900 */
+    --text-muted: #64748b;     /* Slate 500 */
+    --text-light: #ffffff;
+
+    --border: #e2e8f0;         /* Slate 200 */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-glow: 0 0 15px rgba(14, 165, 233, 0.25);
+
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+
+    --font-main: 'Outfit', sans-serif;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* DARK MODE OVERRIDES */
+[data-theme="dark"] {
+    --primary: #f8fafc;        /* Slate 50 */
+    --primary-light: #cbd5e1;  /* Slate 300 */
+    --secondary: #0ea5e9;      /* Sky 500 */
+    --accent: #fbbf24;         /* Amber 400 */
+
+    --bg-body: #0f172a;        /* Slate 900 */
+    --bg-glass: rgba(30, 41, 59, 0.75); /* Slate 800 */
+    --bg-card: #1e293b;        /* Slate 800 */
+    --bg-nav: rgba(15, 23, 42, 0.9);
+
+    --text-main: #f1f5f9;      /* Slate 100 */
+    --text-muted: #94a3b8;     /* Slate 400 */
+    --text-light: #0f172a;
+
+    --border: #334155;         /* Slate 700 */
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 20px rgba(14, 165, 233, 0.4);
+}
+
+/* CUSTOM SCROLLBAR - Modern & Slim */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: 4px;
+    opacity: 0.5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary);
+}
+
+/* RESET & BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--bg-body);
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(123, 44, 191, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(255, 158, 0, 0.05) 0%, transparent 20%);
+    background-attachment: fixed;
+    color: var(--text-main);
+    line-height: 1.6;
+    transition: background 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+button,
+.btn {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-family: var(--font-main);
+}
+
+/* UTILITY CLASSES */
+.glass {
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+}
+
+.shadow-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow);
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(123, 44, 191, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(123, 44, 191, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(123, 44, 191, 0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+}
+
+/* Staggered animation delays */
+.delay-100 {
+    animation-delay: 100ms;
+}
+
+.delay-200 {
+    animation-delay: 200ms;
+}
+
+.delay-300 {
+    animation-delay: 300ms;
+}
+
+.delay-400 {
+    animation-delay: 400ms;
+}

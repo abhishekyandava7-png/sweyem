@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ABI Settings</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="settings.css">
+  <script defer src="theme.js"></script>
+  <!-- Removing settings.js as we will inline logic or update it if complex logic needed -->
+</head>
+
+<body class="fade-in">
+
+  <nav class="navbar">
+    <a href="dashboard.html" class="nav-logo" style="text-decoration: none;">ABI</a>
+    <div class="nav-links">
+      <button id="themeToggle" class="btn-icon" title="Toggle Theme"
+        style="background:none; color: var(--text-muted); font-size: 1.2rem; padding: 5px;">🌗</button>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="faq.html">FAQ</a>
+      <a href="login.html">Log Out</a>
+    </div>
+  </nav>
+
+  <main class="settings">
+    <h1>Settings & Profile</h1>
+    <p class="subtitle">Manage your account and business integrations</p>
+
+    <div class="settings-card slide-up">
+      <h3 style="margin-bottom: 20px; color: var(--primary);">User Profile</h3>
+
+      <div class="setting-item">
+        <label for="username">Username</label>
+        <input type="text" id="username" class="input-field" disabled style="background: var(--bg-body);">
+      </div>
+
+      <div class="setting-item">
+        <label for="email">Personal Email</label>
+        <input type="email" id="email" class="input-field" value="user@example.com">
+      </div>
+
+      <div class="setting-item">
+        <label>Notifications</label>
+        <div class="toggle-switch">
+          <input type="checkbox" id="notifications" checked>
+          <span class="slider"></span>
+        </div>
+      </div>
+
+      <hr style="margin: 30px 0; border: 0; border-top: 1px solid var(--border);">
+
+      <h3 style="margin-bottom: 20px; color: var(--primary);">Business Logic</h3>
+
+      <div class="setting-item">
+        <label for="businessEmail">Business Email (for Official Comms)</label>
+        <input type="email" id="businessEmail" class="input-field" placeholder="ceo@adidas.com">
+      </div>
+
+      <div class="setting-item">
+        <label for="linkedin">LinkedIn Profile URL</label>
+        <input type="url" id="linkedin" class="input-field" placeholder="https://linkedin.com/in/...">
+      </div>
+
+      <button id="save-settings" onclick="saveSettings()">Save Changes</button>
+      <div id="statusMessage" style="margin-top: 15px; font-weight: bold; text-align: center; font-size: 0.9rem;"></div>
+    </div>
+  </main>
+
+  <script>
+    const API_URL = "http://127.0.0.1:8000";
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const userId = localStorage.getItem("user_id");
+      if (userId) {
+        document.getElementById('username').value = userId;
+        await loadProfile(userId);
+      }
+    });
+
+    async function loadProfile(userId) {
+      try {
+        // Load Notifications Preference
+        const notifPref = localStorage.getItem('notifications_enabled');
+        if (notifPref !== null) {
+          document.getElementById('notifications').checked = (notifPref === 'true');
+        }
+
+        const response = await fetch(`${API_URL}/business-profile/${userId}`);
+        if (response.ok) {
+          const profile = await response.json();
+          if (profile.business_email) document.getElementById('businessEmail').value = profile.business_email;
+          if (profile.linkedin) document.getElementById('linkedin').value = profile.linkedin;
+        }
+      } catch (e) { console.error("Could not load profile", e); }
+    }
+
+    // Notification Toggle Logic
+    document.getElementById('notifications').addEventListener('change', async (e) => {
+      const isEnabled = e.target.checked;
+      localStorage.setItem('notifications_enabled', isEnabled);
+
+      const statusMsg = document.getElementById('statusMessage');
+      statusMsg.style.color = isEnabled ? "var(--secondary)" : "var(--text-muted)";
+      statusMsg.innerText = isEnabled ? "🔔 Notifications Enabled" : "🔕 Notifications Disabled";
+
+      if (isEnabled) {
+        if ("Notification" in window) {
+          const permission = await Notification.requestPermission();
+          if (permission === "granted") {
+            new Notification("ABI: Notifications Active", {
+              body: "You will now receive real-time business alerts directly to your desktop.",
+              icon: "https://cdn-icons-png.flaticon.com/512/3602/3602145.png" // Generic bell icon or logo
+            });
+          }
+        } else {
+          alert("Your browser does not support desktop notifications.");
+        }
+      }
+
+      // Clear message after 2 seconds
+      setTimeout(() => {
+        if (statusMsg.innerText.includes("Notifications")) statusMsg.innerText = "";
+      }, 2000);
+    });
+
+    async function saveSettings() {
+      const userId = localStorage.getItem("user_id");
+      const businessEmail = document.getElementById('businessEmail').value;
+      const linkedin = document.getElementById('linkedin').value;
+      const statusMsg = document.getElementById('statusMessage');
+
+      if (!userId) return;
+
+      try {
+        let currentProfile = {};
+        const getRes = await fetch(`${API_URL}/business-profile/${userId}`);
+        if (getRes.ok) currentProfile = await getRes.json();
+
+        const updatedProfile = {
+          ...currentProfile,
+          user_id: userId,
+          business_name: currentProfile.business_name || "Unknown",
+          industry: currentProfile.industry || "Unknown",
+          goals: currentProfile.goals || "Unknown",
+          business_email: businessEmail,
+          linkedin: linkedin,
+          description: currentProfile.description || ""
+        };
+
+        const response = await fetch(`${API_URL}/register-business`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedProfile)
+        });
+
+        if (response.ok) {
+          statusMsg.style.color = "var(--secondary)"; // Success color
+          statusMsg.innerText = "✅ Settings saved successfully!";
+        } else {
+          statusMsg.style.color = "#ff4b4b";
+          const errorText = await response.text();
+          console.error("Server Error:", response.status, errorText);
+          statusMsg.innerText = `Error saving settings (${response.status}): ${errorText}`;
+          alert(`Server Error ${response.status}: ${errorText}`);
+        }
+
+      } catch (e) {
+        console.error(e);
+        statusMsg.innerText = "Connection error. Is the server running?";
+        alert("Connection refused. Make sure 'python -m uvicorn main:app --reload' is running.");
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+/* inventory.css */
+
+.inventory-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.data-table th {
+    text-align: left;
+    padding: 15px;
+    border-bottom: 2px solid var(--border);
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.data-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+}
+
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+.status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.healthy {
+    background: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+}
+
+.critical {
+    background: rgba(255, 159, 67, 0.15);
+    color: #ff9f43;
+}
+
+.danger {
+    background: rgba(255, 82, 82, 0.15);
+    color: #ff5252;
+}
+
+.action-btn {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.action-btn:hover {
+    background: var(--primary);
+    color: white;
+}

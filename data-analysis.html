@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Data Analysis - ABI AI Chat</title>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="data-analysis.css">
+    <script defer src="theme.js"></script>
+    <script defer src="data-analysis.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="dashboard.html" class="nav-logo" style="text-decoration: none;">ABI</a>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="settings.html">Settings</a>
+            <a href="login.html">Log Out</a>
+        </div>
+    </nav>
+
+    <main class="dashboard"
+        style="max-width: 1000px; margin: 0 auto; height: calc(100vh - 80px); display: flex; flex-direction: column;">
+
+        <div class="chat-container slide-up">
+            <div class="chat-header">
+                <h2>📊 Data Analysis Assistant</h2>
+                <p>Ask questions about your business data, trends, or predictions.</p>
+            </div>
+
+            <div id="chatHistory" class="chat-history">
+                <!-- Messages will appear here -->
+                <div class="message ai">
+                    <div class="bubble">Hello! I analyzed your recent sales and inventory. I noticed a 12% increase in
+                        revenue this week. How can I help you dive deeper?</div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="userQuery"
+                    placeholder="Ask analytical questions (e.g., 'Predict next month's sales')..."
+                    onkeypress="handleEnter(event)">
+                <button onclick="sendMessage()" class="send-btn">➤</button>
+            </div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

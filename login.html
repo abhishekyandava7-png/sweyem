@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login - ABI Executive</title>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="login.css">
+    <script defer src="theme.js"></script>
+    <script defer src="login.js"></script>
+</head>
+
+<body class="fade-in">
+
+    <div class="login-container">
+        <div class="auth-card slide-up">
+            <div class="auth-header">
+                <h1 id="formTitle">Welcome Back</h1>
+                <p id="formSubtitle">Enter your credentials to access the dashboard</p>
+            </div>
+
+            <div id="errorDisplay" class="error-msg"></div>
+
+            <form id="authForm" onsubmit="return false;">
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="name@company.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+
+                <!-- Sign Up Fields (Hidden by default) -->
+                <div class="input-group" id="confirmPassGroup" style="display: none;">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="••••••••">
+                </div>
+
+                <button type="submit" class="btn-primary" id="submitBtn" onclick="handleAuth()">Log In</button>
+            </form>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <button class="btn-google" onclick="handleGoogleLogin()">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" width="20" height="20">
+                <span>Continue with Google</span>
+            </button>
+
+            <p class="toggle-text">
+                <span id="toggleText">New to ABI?</span>
+                <a onclick="toggleMode()" id="toggleLink">Sign Up</a>
+            </p>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+/* revenue.css */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto 40px;
+}
+
+.stat-card {
+    text-align: center;
+}
+
+.stat-card span {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-card h2 {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.trend {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.trend.up {
+    color: #2ecc71;
+}
+
+.trend.down {
+    color: #ff595e;
+}
+
+.chart-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-placeholder {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    padding: 20px 0;
+    border-bottom: 2px solid var(--border);
+}
+
+.bar {
+    width: 8%;
+    background: linear-gradient(to top, var(--primary), var(--secondary));
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    opacity: 0.8;
+    transition: var(--transition);
+}
+
+.bar:hover {
+    opacity: 1;
+    transform: scaleY(1.05);
+}

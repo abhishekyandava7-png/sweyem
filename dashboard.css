@@ -1,0 +1,161 @@
+/* dashboard.css */
+
+/* Navbar */
+.navbar {
+  height: 70px;
+  background: var(--bg-nav);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links a {
+  margin-left: 30px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 500;
+  transition: var(--transition);
+  font-size: 0.95rem;
+}
+
+.nav-links a:hover {
+  color: var(--primary);
+}
+
+/* Dashboard Layout */
+.dashboard {
+  padding: 60px 40px;
+  text-align: center;
+  /* Ensure min-height takes into account navbar */
+  min-height: calc(100vh - 70px);
+}
+
+.dashboard h1 {
+  font-size: 2.5rem;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.subtitle {
+  margin-bottom: 60px;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+/* Cards Grid */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Card Component */
+.card {
+  background: var(--bg-card);
+  padding: 30px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  border: 1px solid var(--border);
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-glow);
+  border-color: var(--primary-light);
+}
+
+.card h3 {
+  margin-bottom: 12px;
+  font-size: 1.25rem;
+}
+
+.card h3 a {
+  color: var(--text-main);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.card:hover h3 a {
+  color: var(--primary);
+}
+
+.card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Status Indicators (Border/Accent) */
+.highlight {
+  border-left: 4px solid var(--accent);
+}
+
+.warning {
+  border-left: 4px solid var(--secondary);
+}
+
+.risk {
+  border-left: 4px solid #ff595e;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 20px;
+  }
+
+  .dashboard {
+    padding: 40px 20px;
+  }
+
+  /* Keep grid responsive but maybe 1 column on mobile */
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card Text Styling - Whitish Pink */
+.card p {
+  color: #ffd1dc;
+  /* Whitish Pink */
+  font-weight: 500;
+}
+
+.card h3 {
+  color: #ffeff4;
+  /* Lighter Whitish Pink for headers */
+}
+
+/* Ensure links inside cards inherit the whitish pink color */
+.card h3 a {
+  color: #ffeff4 !important;
+}
+
+.card h3 a:hover {
+  color: white !important;
+  text-shadow: 0 0 5px rgba(255, 192, 203, 0.8);
+}

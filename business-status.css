@@ -1,0 +1,143 @@
+/* business-status.css */
+
+.status-section {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    margin-top: 20px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+}
+
+.status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.status-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-main);
+}
+
+.select-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.select-container label {
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+select {
+    padding: 10px 15px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg-body);
+    color: var(--text-main);
+    font-size: 1rem;
+    cursor: pointer;
+    min-width: 200px;
+    outline: none;
+    transition: var(--transition);
+}
+
+select:hover,
+select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+select option {
+    background: var(--bg-card);
+    color: var(--text-main);
+}
+
+.status-results {
+    min-height: 200px;
+}
+
+.placeholder-text {
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 50px;
+}
+
+/* Store Cards */
+.city-summary {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+}
+
+.city-summary h3 {
+    margin: 0 0 5px 0;
+    color: var(--primary);
+}
+
+.stores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.store-card {
+    background: var(--bg-body);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    transition: var(--transition);
+}
+
+.store-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-glow);
+}
+
+.store-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+}
+
+.store-metric {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.store-metric .label {
+    color: var(--text-muted);
+}
+
+.store-metric .value {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.contribution-bar {
+    margin-top: 15px;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.contribution-fill {
+    height: 100%;
+    background: var(--secondary);
+    border-radius: 3px;
+}
