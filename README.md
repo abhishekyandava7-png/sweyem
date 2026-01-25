@@ -1,0 +1,2 @@
+# sweyem
+autonomous business intelligence
