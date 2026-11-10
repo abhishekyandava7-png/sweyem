@@ -1,173 +1,813 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>ABI Dashboard | Executive Oversight</title>
-    <link rel="stylesheet" href="theme.css">
-    <link rel="stylesheet" href="dashboard.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomy — Autonomous Business Operations Platform</title>
+  <meta name="description" content="Calm, clear autonomous business operations platform. Monitor operations, understand what needs attention, and review AI-suggested actions.">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  </style>
 </head>
-
 <body>
-    <video autoplay muted loop id="bg-video"
-        style="position: fixed; top: 0; left: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; opacity: 0.05;">
-        <source src="logo.mp4" type="video/mp4">
-    </video>
 
-    <nav class="navbar">
-        <a href="dashboard.html" class="nav-logo" style="text-decoration: none;">ABI</a>
-        <div class="nav-links">
-            <button id="themeToggle" class="btn-icon" title="Toggle Theme"
-                style="background:none; color: var(--text-muted); font-size: 1.2rem; padding: 5px;">🌗</button>
-            <a href="settings.html">Settings</a>
-            <a href="faq.html">FAQ</a>
-            <a href="login.html">Log Out</a>
+<div class="app-container">
+  <!-- Mobile Sidebar Overlay Backdrop -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Left Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="brand-wrapper">
+        <div class="brand-icon">A</div>
+        <div class="brand-text">
+          <span class="brand-title">Autonomy</span>
+          <span class="brand-tag">Autonomous Ops</span>
         </div>
+      </a>
+      <button class="mobile-menu-btn" id="sidebarCloseBtn" aria-label="Close sidebar" style="display: none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Navigation List -->
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Workspace</div>
+      
+      <a href="#overview" class="nav-item active" data-tab="overview">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+        <span>Overview</span>
+        <span class="nav-badge" id="navAttentionBadge">3</span>
+      </a>
+
+      <a href="#operations" class="nav-item" data-tab="operations">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        <span>Operations</span>
+      </a>
+
+      <a href="#agents" class="nav-item" data-tab="agents">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        <span>AI Agents</span>
+        <span class="nav-badge" style="background-color:#ecfdf5; color:#065f46;">6 Live</span>
+      </a>
+
+      <a href="#insights" class="nav-item" data-tab="insights">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+          <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+        </svg>
+        <span>Insights</span>
+      </a>
+
+      <div class="nav-section-title" style="margin-top: 14px;">System</div>
+
+      <a href="#integrations" class="nav-item" data-tab="integrations">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        <span>Integrations</span>
+      </a>
+
+      <a href="#settings" class="nav-item" data-tab="settings">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
+        </svg>
+        <span>Settings</span>
+      </a>
     </nav>
 
-    <main class="dashboard" style="color: black;">
-        <h1>Business Health Overview</h1>
-        <p class="subtitle" style="color: #e5acac;">Real-time insights for <span id="displayUserId">...</span></p>
+    <!-- Sidebar Footer / System Status -->
+    <div class="sidebar-footer">
+      <div class="system-status-card">
+        <div class="status-header">
+          <div class="status-indicator-wrap">
+            <span class="pulse-dot"></span>
+            <span>Autonomy Engine</span>
+          </div>
+          <span class="status-version">v2.4</span>
+        </div>
+        <p class="status-desc">All 6 core agents operational. Human safety guardrails active.</p>
+      </div>
+    </div>
+  </aside>
 
-        <!-- Business Profile Section -->
-        <section id="businessProfile"
-            style="background: white; padding: 20px; border-radius: 12px; margin: 20px auto; max-width: 800px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); color: black;">
-            <h2 id="businessNameDisplay" style="margin-top: 0; color: black;">Business Name</h2>
-            <p style="color: black; margin-bottom: 5px;"><strong>Industry:</strong> <span id="industryDisplay">-</span>
-            </p>
-            <p style="color: black;"><strong>Goal:</strong> <span id="goalDisplay">-</span></p>
-        </section>
+  <!-- Main Wrapper -->
+  <div class="main-wrapper">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open mobile menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
 
-        <section id="integrationPanel"
-            style="background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px; margin: 20px auto; max-width: 800px; text-align: center; border: 1px solid #4facfe; color: black;">
-            <h3 style="color: black;">🔗 Connect Business Data Streams</h3>
-            <p style="color: #333;">The AI Agent monitors these tools autonomously for risks.</p>
-            <div style="display: flex; justify-content: center; gap: 30px; margin: 20px 0;">
-                <label style="color: black;"><input type="checkbox" id="shopifyCheck" checked> Shopify (Sales)</label>
-                <label style="color: black;"><input type="checkbox" id="slackCheck"> Slack (Ops)</label>
-                <label style="color: black;"><input type="checkbox" id="stripeCheck"> Stripe (Finance)</label>
-            </div>
-            <button onclick="initializeTools()" class="btn"
-                style="background: #4facfe; color: white; padding: 12px 30px; border-radius: 8px; cursor: pointer; border: none;">Confirm
-                & Deploy Agent</button>
-        </section>
+        <div class="page-meta">
+          <h1 class="page-title">
+            Overview
+            <span class="demo-badge">Sample Sandbox</span>
+          </h1>
+        </div>
+      </div>
 
-        <div id="proactiveAlert" style="display: none; margin-bottom: 30px;">
-            <div
-                style="background: rgba(255, 75, 43, 0.1); border-left: 5px solid #ff4b2b; padding: 20px; border-radius: 8px;">
-                <h4 style="color: #ff4b2b; margin: 0;">🚨 PROACTIVE RECOVERY PLAN DETECTED</h4>
-                <p id="alertDescription" style="margin: 10px 0; color: black; font-weight: 500;"></p>
-                <small style="color: #333;">Source: Research Lab AI • <a href="insights.html"
-                        style="text-decoration: underline;">View Full Strategy</a></small>
-            </div>
+      <div class="topbar-right">
+        <!-- Date Range Selector -->
+        <div class="date-selector-wrapper">
+          <button class="date-selector-btn" id="dateSelectorBtn" aria-label="Select date range">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span id="selectedDateLabel">Last 30 Days</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          
+          <div class="date-dropdown" id="dateDropdown">
+            <button class="dropdown-item" data-val="today">Today (Real-time)</button>
+            <button class="dropdown-item" data-val="7d">Last 7 Days</button>
+            <button class="dropdown-item active" data-val="30d">Last 30 Days</button>
+            <button class="dropdown-item" data-val="quarter">Quarter to Date</button>
+          </div>
         </div>
 
-        <div class="cards">
-            <!-- Row 1 -->
-            <div class="card">
-                <h3><a href="revenue.html">📈 Revenue</a></h3>
-                <p>Stable Growth</p>
-            </div>
+        <!-- Notifications Bell -->
+        <div class="notification-wrapper">
+          <button class="icon-btn" id="notifBtn" aria-label="Notifications">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            <span class="unread-badge">3</span>
+          </button>
 
-            <div class="card warning">
-                <h3><a href="inventory.html">📦 Inventory</a></h3>
-                <p>Low Stock Alert</p>
+          <div class="notifications-menu" id="notifMenu">
+            <div class="notifications-header">
+              <h4>System Notifications</h4>
+              <span style="font-size:11px; color:var(--text-muted);">3 unread</span>
             </div>
-
-            <div class="card highlight">
-                <h3><a href="business-status.html">� Business Status</a></h3>
-                <p>Monitoring Actively</p>
+            <div class="notifications-list">
+              <div class="notification-row">
+                <span style="color:var(--status-danger);">●</span>
+                <div>
+                  <div style="font-weight:600; color:var(--text-primary);">Restock threshold reached</div>
+                  <div style="font-size:11.5px; color:var(--text-muted);">SKU #4892 inventory dropped to 4 days supply.</div>
+                  <div style="font-size:10.5px; color:var(--text-subtle); margin-top:2px;">18 mins ago</div>
+                </div>
+              </div>
+              <div class="notification-row">
+                <span style="color:var(--status-warning);">●</span>
+                <div>
+                  <div style="font-weight:600; color:var(--text-primary);">Price elasticity trigger</div>
+                  <div style="font-size:11.5px; color:var(--text-muted);">Competitor prices increased across 42 items.</div>
+                  <div style="font-size:10.5px; color:var(--text-subtle); margin-top:2px;">1 hour ago</div>
+                </div>
+              </div>
+              <div class="notification-row">
+                <span style="color:var(--status-success);">●</span>
+                <div>
+                  <div style="font-weight:600; color:var(--text-primary);">Settlements reconciled</div>
+                  <div style="font-size:11.5px; color:var(--text-muted);">248 Stripe transactions matched with zero errors.</div>
+                  <div style="font-size:10.5px; color:var(--text-subtle); margin-top:2px;">2 hours ago</div>
+                </div>
+              </div>
             </div>
-
-            <!-- Row 2 -->
-            <div class="card highlight" style="border-left-color: #0ea5e9;">
-                <h3><a href="insights.html">🗨️ Insights</a></h3>
-                <p>3 actionable insights found</p>
-            </div>
-
-            <div class="card" style="border-left: 4px solid #8b5cf6;">
-                <h3><a href="data-analysis.html">📊 Data Analysis</a></h3>
-                <p>Sales & demand patterns ready</p>
-            </div>
-
-            <div class="card risk">
-                <h3><a href="risk-actions.html">⚠️ Risk</a></h3>
-                <p>2 potential risks detected</p>
-            </div>
+          </div>
         </div>
+
+        <!-- User Profile Dropdown -->
+        <div class="user-menu-wrapper">
+          <button class="user-profile-btn" id="userProfileBtn" aria-label="User profile">
+            <div class="user-avatar">EV</div>
+            <div class="user-info">
+              <span class="user-name">Elena Vance</span>
+              <span class="user-role">Founder & COO</span>
+            </div>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted);">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+
+          <div class="user-dropdown" id="userDropdown">
+            <div style="padding: 8px 14px; border-bottom: 1px solid var(--border-subtle);">
+              <div style="font-size:12.5px; font-weight:600; color:var(--text-primary);">Elena Vance</div>
+              <div style="font-size:11px; color:var(--text-muted);">elena@vanceholdings.com</div>
+            </div>
+            <button class="dropdown-item" onclick="window.AutonomyApp.showToast('Workspace settings opened')">Workspace Profile</button>
+            <button class="dropdown-item" onclick="window.AutonomyApp.showToast('API access keys opened')">API & Webhooks</button>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item" onclick="window.AutonomyApp.showToast('Audit report ready for download')">Export Audit Trail</button>
+            <button class="dropdown-item" style="color:var(--status-danger-text);" onclick="window.AutonomyApp.showToast('Logged out of demo session')">Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+      <!-- Illustrative Demo Notification Banner -->
+      <div class="demo-notice-bar">
+        <span>
+          <strong>Demo Sandbox:</strong> All activities, metrics, and recommendations are simulated sample data for illustrative preview.
+        </span>
+        <button class="demo-notice-dismiss" onclick="this.parentElement.style.display='none'">Dismiss Banner</button>
+      </div>
+
+      <!-- TAB 1: OVERVIEW -->
+      <section class="tab-pane active" id="tab-overview">
+        <!-- Welcome Section -->
+        <div class="welcome-card">
+          <div class="welcome-info">
+            <h2 class="welcome-title">Welcome back, Elena</h2>
+            <div class="welcome-status">
+              <span>Your business is running smoothly.</span>
+              <span class="automation-pill">
+                <span class="pill-dot"></span>
+                14 active automations running without intervention
+              </span>
+            </div>
+          </div>
+          <div class="welcome-actions">
+            <button class="btn btn-secondary btn-sm" id="simulateAnomalyBtn" title="Trigger a demo anomaly to test the approval queue">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+              </svg>
+              Simulate Anomaly
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="window.AutonomyApp.showToast('Report generated and downloaded (PDF)')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Export Operations Report
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Key Metric Cards -->
+        <div class="metrics-grid">
+          <!-- Metric 1: Revenue -->
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">Revenue (30d)</span>
+              <div class="metric-icon-wrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="1" x2="12" y2="23"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+              </div>
+            </div>
+            <div class="metric-value-wrap">
+              <span class="metric-value">$128,450</span>
+            </div>
+            <div class="metric-footer">
+              <span class="trend-badge positive">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="18 15 12 9 6 15"/>
+                </svg>
+                +12.4%
+              </span>
+              <span class="metric-subtext">+$14,200 vs last period</span>
+            </div>
+          </div>
+
+          <!-- Metric 2: Orders -->
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">Orders Processed</span>
+              <div class="metric-icon-wrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+              </div>
+            </div>
+            <div class="metric-value-wrap">
+              <span class="metric-value">1,842</span>
+            </div>
+            <div class="metric-footer">
+              <span class="trend-badge positive">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="18 15 12 9 6 15"/>
+                </svg>
+                +8.1%
+              </span>
+              <span class="metric-subtext">138 orders above target</span>
+            </div>
+          </div>
+
+          <!-- Metric 3: Tasks Automated -->
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">Tasks Automated</span>
+              <div class="metric-icon-wrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+              </div>
+            </div>
+            <div class="metric-value-wrap">
+              <span class="metric-value">6,419</span>
+            </div>
+            <div class="metric-footer">
+              <span class="trend-badge positive">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="18 15 12 9 6 15"/>
+                </svg>
+                +24.6%
+              </span>
+              <span class="metric-subtext">Saved ~86 labor hours</span>
+            </div>
+          </div>
+
+          <!-- Metric 4: Customer Satisfaction -->
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">Customer Satisfaction</span>
+              <div class="metric-icon-wrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="metric-value-wrap">
+              <span class="metric-value">98.2%</span>
+            </div>
+            <div class="metric-footer">
+              <span class="trend-badge positive">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="18 15 12 9 6 15"/>
+                </svg>
+                +1.8%
+              </span>
+              <span class="metric-subtext">Based on 420 reviews</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Grid: 2 Columns -->
+        <div class="dashboard-grid">
+          <!-- Main Left Column -->
+          <div class="col-main">
+            <!-- SECTION: Needs Your Attention (Approval Queue) -->
+            <section class="dashboard-card" id="attentionSection">
+              <div class="card-header">
+                <div class="card-header-left">
+                  <h3 class="card-title">Needs Your Attention</h3>
+                  <span class="count-badge attention" id="attentionCountBadge">3 Pending Approval</span>
+                </div>
+                <div class="card-header-actions">
+                  <span style="font-size:12px; color:var(--text-muted);">Human-in-the-loop oversight required</span>
+                </div>
+              </div>
+
+              <!-- Attention List Items -->
+              <div class="attention-list" id="attentionList">
+                <!-- Dynamically populated via JS -->
+              </div>
+
+              <!-- Empty state when all approved -->
+              <div class="empty-attention" id="emptyAttention">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <div style="font-weight:600; color:var(--text-primary);">All actions reviewed</div>
+                <div style="font-size:12.5px; color:var(--text-muted);">There are no pending items requiring human authorization right now.</div>
+              </div>
+            </section>
+
+            <!-- SECTION: Performance Chart (Revenue Over Time) -->
+            <section class="dashboard-card">
+              <div class="card-header">
+                <div class="card-header-left">
+                  <h3 class="card-title">Revenue Performance</h3>
+                  <div class="chart-header-stats">
+                    <span class="chart-main-value" id="chartTotalValue">$128,450</span>
+                    <span class="chart-stat-delta" id="chartGrowthValue">+12.4% vs last month</span>
+                  </div>
+                </div>
+
+                <div class="chart-filters">
+                  <button class="chart-filter-btn" data-period="7D">7D</button>
+                  <button class="chart-filter-btn active" data-period="30D">30D</button>
+                  <button class="chart-filter-btn" data-period="90D">90D</button>
+                </div>
+              </div>
+
+              <div class="chart-container">
+                <div class="chart-svg-wrapper">
+                  <svg class="chart-svg" id="chartSvg" preserveAspectRatio="none"></svg>
+                  <div class="chart-tooltip" id="chartTooltip"></div>
+                </div>
+
+                <div class="chart-legend">
+                  <div class="legend-item">
+                    <span class="legend-dot primary"></span>
+                    <span>Autonomous Revenue Output</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-dot target"></span>
+                    <span>Forecast Target Baseline</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- SECTION: Activity Area (Recent Automated Actions) -->
+            <section class="dashboard-card">
+              <div class="card-header">
+                <div class="card-header-left">
+                  <h3 class="card-title">Recent Automated Activity</h3>
+                  <span class="count-badge">Audit Trail</span>
+                </div>
+                <div class="card-header-actions">
+                  <span style="font-size:12px; color:var(--text-muted);">Real-time operations log</span>
+                </div>
+              </div>
+
+              <div class="activity-controls">
+                <div class="activity-filters">
+                  <button class="activity-filter-btn active" data-cat="all">All Operations</button>
+                  <button class="activity-filter-btn" data-cat="inventory">Supply Chain</button>
+                  <button class="activity-filter-btn" data-cat="finance">Financial</button>
+                  <button class="activity-filter-btn" data-cat="cx">Customer Ops</button>
+                </div>
+              </div>
+
+              <div class="activity-table-wrapper">
+                <table class="activity-table">
+                  <thead>
+                    <tr>
+                      <th style="width:110px;">Timestamp</th>
+                      <th style="width:170px;">Agent</th>
+                      <th>Automated Action & Context</th>
+                      <th style="width:110px;">Status</th>
+                      <th style="width:80px; text-align:right;">Trace</th>
+                    </tr>
+                  </thead>
+                  <tbody id="activityTableBody">
+                    <!-- Populated via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          <!-- Side Right Column -->
+          <aside class="col-side">
+            <!-- AI Recommendations Panel -->
+            <div class="dashboard-card">
+              <div class="card-header">
+                <div class="card-header-left">
+                  <h3 class="card-title">AI Recommendations</h3>
+                  <span class="count-badge">3 Opportunities</span>
+                </div>
+              </div>
+
+              <div class="recommendations-list" id="recommendationsList">
+                <!-- Dynamically rendered via JS -->
+              </div>
+            </div>
+
+            <!-- Active Agent Fleet Widget -->
+            <div class="dashboard-card">
+              <div class="card-header">
+                <div class="card-header-left">
+                  <h3 class="card-title">Autonomous Agent Fleet</h3>
+                  <span class="count-badge" style="background-color:#ecfdf5; color:#065f46;">6 Healthy</span>
+                </div>
+              </div>
+
+              <div class="agent-fleet-list">
+                <div class="fleet-row">
+                  <div class="fleet-agent-info">
+                    <span class="fleet-status-dot"></span>
+                    <span class="fleet-agent-name">Inventory Optimization</span>
+                  </div>
+                  <span class="fleet-metric">1,240 runs</span>
+                </div>
+
+                <div class="fleet-row">
+                  <div class="fleet-agent-info">
+                    <span class="fleet-status-dot"></span>
+                    <span class="fleet-agent-name">Dynamic Pricing & Margin</span>
+                  </div>
+                  <span class="fleet-metric">842 runs</span>
+                </div>
+
+                <div class="fleet-row">
+                  <div class="fleet-agent-info">
+                    <span class="fleet-status-dot"></span>
+                    <span class="fleet-agent-name">Ledger Reconciliation</span>
+                  </div>
+                  <span class="fleet-metric">2,910 runs</span>
+                </div>
+
+                <div class="fleet-row">
+                  <div class="fleet-agent-info">
+                    <span class="fleet-status-dot"></span>
+                    <span class="fleet-agent-name">Customer Retention (VIP)</span>
+                  </div>
+                  <span class="fleet-metric">614 runs</span>
+                </div>
+
+                <div class="fleet-row">
+                  <div class="fleet-agent-info">
+                    <span class="fleet-status-dot"></span>
+                    <span class="fleet-agent-name">Vendor Contract Sync</span>
+                  </div>
+                  <span class="fleet-metric">388 runs</span>
+                </div>
+
+                <div class="fleet-row">
+                  <div class="fleet-agent-info">
+                    <span class="fleet-status-dot"></span>
+                    <span class="fleet-agent-name">Marketing Velocity Monitor</span>
+                  </div>
+                  <span class="fleet-metric">425 runs</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upcoming Scheduled Jobs -->
+            <div class="dashboard-card">
+              <div class="card-header">
+                <div class="card-header-left">
+                  <h3 class="card-title">Upcoming Tasks</h3>
+                </div>
+                <span style="font-size:11.5px; color:var(--text-muted);">Automated schedule</span>
+              </div>
+
+              <div class="schedule-list">
+                <div class="schedule-item">
+                  <span class="schedule-name">Stripe & Bank Ledger Balancing</span>
+                  <span class="schedule-time">in 42 mins</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-name">Supplier Lead Time Sync (Asia)</span>
+                  <span class="schedule-time">in 2 hrs</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-name">Customer Sentiment & Return Analysis</span>
+                  <span class="schedule-time">in 4.5 hrs</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-name">Daily Executive Briefing Generation</span>
+                  <span class="schedule-time">in 7 hrs</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- TAB 2: OPERATIONS VIEW -->
+      <section class="tab-pane" id="tab-operations">
+        <div class="view-container">
+          <div class="view-header">
+            <h2 class="view-title">Operations Control Center</h2>
+            <p class="view-subtitle">Supervise live automated operational workflows and trigger manual overrides.</p>
+          </div>
+
+          <div class="grid-cards">
+            <div class="dashboard-card" style="padding:20px;">
+              <h3 style="font-size:15px; font-weight:700; margin-bottom:8px;">Supply Chain & Logistics</h3>
+              <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:14px;">
+                Monitoring 3 regional warehouses, 14 suppliers, and 4 shipping carriers.
+              </p>
+              <div style="font-size:12px; background:var(--bg-app); padding:10px; border-radius:6px; margin-bottom:14px;">
+                <div>• Average replenishment turnaround: <strong>6.2 days</strong></div>
+                <div>• Stockout risk probability: <strong>0.8%</strong> (Target &lt; 2%)</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="window.AutonomyApp.showToast('Supply Chain parameters refreshed')">Configure Thresholds</button>
+            </div>
+
+            <div class="dashboard-card" style="padding:20px;">
+              <h3 style="font-size:15px; font-weight:700; margin-bottom:8px;">Financial Reconciliation</h3>
+              <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:14px;">
+                Continuous matching between payment gateways, merchant accounts, and accounting ledgers.
+              </p>
+              <div style="font-size:12px; background:var(--bg-app); padding:10px; border-radius:6px; margin-bottom:14px;">
+                <div>• Unreconciled transactions: <strong>0</strong></div>
+                <div>• Autonomous match rate: <strong>99.8%</strong></div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="window.AutonomyApp.showToast('Ledger sync completed')">Run Manual Audit</button>
+            </div>
+
+            <div class="dashboard-card" style="padding:20px;">
+              <h3 style="font-size:15px; font-weight:700; margin-bottom:8px;">Customer Experience (CX)</h3>
+              <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:14px;">
+                Automated triage and resolution of shipping inquiries, returns, and exchanges.
+              </p>
+              <div style="font-size:12px; background:var(--bg-app); padding:10px; border-radius:6px; margin-bottom:14px;">
+                <div>• First response time: <strong>&lt; 30 seconds</strong></div>
+                <div>• Human escalation rate: <strong>4.2%</strong></div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="window.AutonomyApp.showToast('CX policies updated')">Manage Care Policies</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: AI AGENTS VIEW -->
+      <section class="tab-pane" id="tab-agents">
+        <div class="view-container">
+          <div class="view-header">
+            <h2 class="view-title">Active AI Agent Fleet</h2>
+            <p class="view-subtitle">Autonomous agents deployed across your business stack with verifiable safety boundaries.</p>
+          </div>
+
+          <div class="grid-cards">
+            <div class="dashboard-card" style="padding:20px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <h4 style="font-weight:700; font-size:15px;">Inventory Optimization Agent</h4>
+                <span class="status-badge-inline completed">Healthy</span>
+              </div>
+              <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:12px;">
+                Monitors reorder points, tracks safety stock, and creates automated purchase orders when stock depletes.
+              </p>
+              <div style="font-size:11.5px; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:10px;">
+                Authority Limit: <strong>Up to $10,000 / PO</strong> • Confidence Threshold: <strong>95%</strong>
+              </div>
+            </div>
+
+            <div class="dashboard-card" style="padding:20px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <h4 style="font-weight:700; font-size:15px;">Dynamic Margin & Pricing Agent</h4>
+                <span class="status-badge-inline completed">Healthy</span>
+              </div>
+              <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:12px;">
+                Analyzes competitor catalog indexing, demand elasticity, and adjusts prices within authorized bounds.
+              </p>
+              <div style="font-size:11.5px; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:10px;">
+                Authority Limit: <strong>±7.5% per item / week</strong> • Confidence Threshold: <strong>92%</strong>
+              </div>
+            </div>
+
+            <div class="dashboard-card" style="padding:20px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <h4 style="font-weight:700; font-size:15px;">VIP Customer Retention Agent</h4>
+                <span class="status-badge-inline completed">Healthy</span>
+              </div>
+              <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:12px;">
+                Detects shipment delays and friction for high-value accounts, dispatching proactive care packages.
+              </p>
+              <div style="font-size:11.5px; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:10px;">
+                Authority Limit: <strong>Up to $200 compensation credit</strong> • Confidence Threshold: <strong>97%</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: INSIGHTS VIEW -->
+      <section class="tab-pane" id="tab-insights">
+        <div class="view-container">
+          <div class="view-header">
+            <h2 class="view-title">Strategic Insights</h2>
+            <p class="view-subtitle">Long-term trend analysis, margin leakage detection, and market opportunity discovery.</p>
+          </div>
+
+          <div class="dashboard-card" style="padding:24px;">
+            <h3 style="font-size:15px; font-weight:700; margin-bottom:12px;">Automated Findings (Past 30 Days)</h3>
+            <ul style="font-size:13.5px; color:var(--text-secondary); line-height:1.8; padding-left:20px;">
+              <li><strong>Packaging optimization:</strong> Reducing box volume for SKU bundle #102 will decrease dimensional carrier fees by $1,800/month.</li>
+              <li><strong>Payment routing efficiency:</strong> 3.4% of EU credit card charges suffered non-optimal currency conversion fees. Routing through local acquiring saved $640.</li>
+              <li><strong>Cart abandonment pattern:</strong> Visitors requesting express shipping drop off 22% more often when estimated arrival is &gt; 3 days. Recommend partnering with localized 2-day fulfillment hubs.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: INTEGRATIONS VIEW -->
+      <section class="tab-pane" id="tab-integrations">
+        <div class="view-container">
+          <div class="view-header">
+            <h2 class="view-title">Connected Integrations</h2>
+            <p class="view-subtitle">Data sources, webhooks, and execution endpoints connected to Autonomy.</p>
+          </div>
+
+          <div class="grid-cards">
+            <div class="dashboard-card" style="padding:20px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <h4 style="font-weight:700; font-size:15px;">Shopify (Storefront & Orders)</h4>
+                <span class="status-badge-inline completed">Connected</span>
+              </div>
+              <p style="font-size:12.5px; color:var(--text-secondary);">Real-time stream for checkouts, catalog changes, and refund events.</p>
+            </div>
+
+            <div class="dashboard-card" style="padding:20px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <h4 style="font-weight:700; font-size:15px;">Stripe (Payments & Billing)</h4>
+                <span class="status-badge-inline completed">Connected</span>
+              </div>
+              <p style="font-size:12.5px; color:var(--text-secondary);">Direct webhook synchronization for payouts, disputes, and fee analysis.</p>
+            </div>
+
+            <div class="dashboard-card" style="padding:20px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <h4 style="font-weight:700; font-size:15px;">Slack (Team Notifications)</h4>
+                <span class="status-badge-inline completed">Connected</span>
+              </div>
+              <p style="font-size:12.5px; color:var(--text-secondary);">Dispatches interactive approval alerts to #executive-ops channel.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: SETTINGS VIEW -->
+      <section class="tab-pane" id="tab-settings">
+        <div class="view-container">
+          <div class="view-header">
+            <h2 class="view-title">Platform Settings & Guardrails</h2>
+            <p class="view-subtitle">Define human-in-the-loop thresholds, notification policies, and agent permissions.</p>
+          </div>
+
+          <div class="dashboard-card" style="padding:24px;">
+            <div class="card-setting-row">
+              <div>
+                <div style="font-weight:600; font-size:13.5px; color:var(--text-primary);">Human Authorization Threshold (Financial)</div>
+                <div style="font-size:12px; color:var(--text-muted);">Require business owner confirmation for any expenditure exceeding this limit.</div>
+              </div>
+              <div style="font-weight:700; color:var(--accent);">$10,000.00 USD</div>
+            </div>
+
+            <div class="card-setting-row">
+              <div>
+                <div style="font-weight:600; font-size:13.5px; color:var(--text-primary);">Autonomous Safe Mode</div>
+                <div style="font-size:12px; color:var(--text-muted);">When enabled, actions will be staged for review rather than automatically executed.</div>
+              </div>
+              <div>
+                <span class="status-badge-inline completed">Active</span>
+              </div>
+            </div>
+
+            <div class="card-setting-row">
+              <div>
+                <div style="font-weight:600; font-size:13.5px; color:var(--text-primary);">Daily Executive Digest</div>
+                <div style="font-size:12px; color:var(--text-muted);">Receive a consolidated morning brief of overnight autonomous decisions.</div>
+              </div>
+              <div>
+                <span style="font-size:12.5px; font-weight:600; color:var(--text-primary);">08:00 AM EST</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
+  </div>
+</div>
 
-    <script>
-        async function initializeTools() {
-            const btn = document.querySelector('#integrationPanel button');
-            const originalText = btn.innerText;
-            btn.innerText = "🔄 Connecting...";
+<!-- Reusable Detail / Action Modal -->
+<div class="modal-backdrop" id="detailModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalTitle">Review Action</h3>
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <!-- Injected by JS -->
+    </div>
+    <div class="modal-footer" id="modalFooter">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+</div>
 
-            try {
-                const response = await fetch('http://127.0.0.1:8000/deploy-agents');
-                const data = await response.json();
+<!-- Toast Feedback Container -->
+<div class="toast-container" id="toastContainer"></div>
 
-                if (data.status === "Agents Deployed") {
-                    btn.innerText = "✅ Agents Active";
-                    btn.style.background = "#10b981";
-
-                    document.getElementById('integrationPanel').style.opacity = "0.6";
-                    document.getElementById('integrationPanel').style.pointerEvents = "none";
-
-                    // Update Dashboard Cards with "Real-Time" Data
-                    const revenueCard = document.querySelector('.card a[href="revenue.html"]').closest('.card');
-                    revenueCard.querySelector('p').innerText = `Live Revenue: $${data.live_data.revenue}`;
-                    revenueCard.style.borderLeftColor = "#10b981"; // Green for active
-
-                    const inventoryCard = document.querySelector('.card a[href="inventory.html"]').closest('.card');
-                    inventoryCard.querySelector('p').innerText = `Stock Count: ${data.live_data.inventory_count} Units`;
-
-                    alert(`🚀 Connected!\nShopify: ${data.shopify_status}\nSlack: ${data.slack_status}`);
-                }
-            } catch (e) {
-                console.error(e);
-                alert("Failed to connect agents. Is the backend running?");
-                btn.innerText = originalText;
-            }
-        }
-
-        async function pollAgentMemory() {
-            try {
-                // Bridge to your Python Backend
-                const response = await fetch('http://127.0.0.1:8000/get-latest-insights?user_id=CEO_Alpha_01');
-                const data = await response.json();
-
-                if (data.insight && data.insight.roadmap) {
-                    // Show the alert box
-                    document.getElementById('proactiveAlert').style.display = "block";
-                    document.getElementById('alertDescription').innerText = "Phase 1: " + data.insight.roadmap[0];
-                    document.getElementById('aiResponse').innerHTML = `<p style="color: #4facfe;">Full Roadmap: ${data.insight.roadmap.join(' ➔ ')}</p>`;
-                    // Update the Insights card
-                    document.getElementById('insight-text').innerHTML =
-                        `<strong>Next Action:</strong> ${data.insight.roadmap[1]}`;
-
-                    // Send Real Notification if enabled
-                    if (localStorage.getItem('notifications_enabled') === 'true' && Notification.permission === "granted") {
-                        // Simple debounce: don't notify if we just did (using session storage or just simple check)
-                        if (!sessionStorage.getItem('notified_insight')) {
-                            new Notification("🚨 AI Anomaly Detected", {
-                                body: `Action Required: ${data.insight.roadmap[0]}`,
-                                icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png" // Alert icon
-                            });
-                            sessionStorage.setItem('notified_insight', 'true');
-                        }
-                    }
-                }
-            } catch (e) { console.log("Waiting for Agent to finish research..."); }
-        }
-
-        // 10-second polling to demonstrate real-time agency
-        setInterval(pollAgentMemory, 10000);
-        pollAgentMemory(); 
-    </script>
-    <script src="dashboard.js"></script>
-    <script src="theme.js"></script>
+<!-- Client Logic -->
+<script src="dashboard.js"></script>
 </body>
-
 </html>
